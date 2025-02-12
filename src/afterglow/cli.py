@@ -139,6 +139,13 @@ def chain(
                 line_probability=float(params.get("prob", params.get("line_probability", 0.15))),
                 seed=int(params.get("seed", 1234)),
             )
+        elif name in {"glow", "bloom"}:
+            current = bloom(
+                current,
+                threshold=float(params.get("threshold", 0.85)),
+                strength=float(params.get("strength", 0.8)),
+                radius=int(params.get("radius", 12)),
+            )
         else:
             raise typer.BadParameter(f"Unknown step: {name}")
 
