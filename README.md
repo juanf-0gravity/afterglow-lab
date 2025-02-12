@@ -15,7 +15,14 @@ Quick start
    pip install -r requirements.txt
    ```
 
-2) Run the CLI against an image:
+2) Either use the module CLI or the installed console script:
+
+   ```bash
+   # After `pip install -e .`, you can run:
+   afterglow --help
+   ```
+
+   Or directly via python module:
 
    ```bash
    # Halftone dots
