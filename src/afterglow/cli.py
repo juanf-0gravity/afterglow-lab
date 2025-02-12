@@ -6,7 +6,7 @@ from PIL import Image
 
 from afterglow.filters.halftone import halftone_dots
 from afterglow.filters.perlin_warp import perlin_warp
-from afterglow.filters.kaleidoscope import kaleidoscope
+from afterglow.filters.kaleidoscope import kaleidoscope as kaleidoscope_filter
 from afterglow.filters.glitch import chromatic_aberration, scanline_glitch
 from afterglow.filters.bloom import bloom
 
@@ -59,7 +59,7 @@ def kaleidoscope(
     radius: float = typer.Option(1.0, help="Relative radius [0-1]"),
 ):
     image = _open_image(input)
-    result = kaleidoscope(image, slices=slices, radius=radius)
+    result = kaleidoscope_filter(image, slices=slices, radius=radius)
     _save_image(result, output)
 
 
@@ -124,11 +124,16 @@ def chain(
                         params[key] = value
         name = name.strip().lower()
         if name in {"halftone"}:
+            if "cell" in params and "cell_size" not in params:
+                try:
+                    params["cell_size"] = int(params.pop("cell"))
+                except Exception:
+                    params.pop("cell", None)
             current = halftone_dots(current, **params)
         elif name in {"perlin_warp", "perlin-warp", "warp"}:
             current = perlin_warp(current, **params)
         elif name in {"kaleidoscope", "kale"}:
-            current = kaleidoscope(current, **params)
+            current = kaleidoscope_filter(current, **params)
         elif name in {"glitch", "scanline"}:
             # Map friendly params
             if "shift" in params:
