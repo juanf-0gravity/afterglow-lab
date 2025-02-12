@@ -49,6 +49,18 @@ Quick start
    # Reaction-diffusion stylization
    python -m afterglow.cli react-diff input.jpg -o examples/output/react.png --steps 250 --mix 0.5
 
+   # ASCII art render
+   python -m afterglow.cli ascii input.jpg -o examples/output/ascii.png --cols 120
+
+   # CRT tube look
+   python -m afterglow.cli crt input.jpg -o examples/output/crt.png
+
+   # Oil-paint stylization
+   python -m afterglow.cli oilpaint input.jpg -o examples/output/oil.png --radius 5
+
+   # Neon edges
+   python -m afterglow.cli neon input.jpg -o examples/output/neon.png --strength 1.6 --glow-radius 2.2
+
    # Chain effects (quick and dirty parser)
    python -m afterglow.cli chain input.jpg -o examples/output/chain.png \
      "halftone:cell=8,contrast=1.1" \

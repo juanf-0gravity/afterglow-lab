@@ -12,6 +12,10 @@ from afterglow.filters.bloom import bloom
 from afterglow.filters.pixel_sort import pixel_sort
 from afterglow.filters.flow_paint import flow_paint
 from afterglow.filters.reaction_diffusion import reaction_diffusion
+from afterglow.filters.ascii_art import ascii_art
+from afterglow.filters.crt import crt_tube
+from afterglow.filters.kuwahara import kuwahara
+from afterglow.filters.neon_edges import neon_edges
 
 app = typer.Typer(add_completion=False, help="Afterglow Lab: creative image tinkering")
 
@@ -119,6 +123,62 @@ def reaction_diffusion_cmd(
 ):
     image = _open_image(input)
     result = reaction_diffusion(image, steps=steps, feed=feed, kill=kill, mix=mix, seed=seed)
+    _save_image(result, output)
+
+
+@app.command("ascii")
+def ascii_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    cols: int = typer.Option(120, help="Characters across"),
+    invert: bool = typer.Option(False, help="Invert brightness mapping"),
+):
+    image = _open_image(input)
+    result = ascii_art(image, cols=cols, invert=invert)
+    _save_image(result, output)
+
+
+@app.command("crt")
+def crt_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    scanline_strength: float = typer.Option(0.25),
+    vignette: float = typer.Option(0.35),
+    curvature: float = typer.Option(0.08),
+    mask_strength: float = typer.Option(0.2),
+):
+    image = _open_image(input)
+    result = crt_tube(
+        image,
+        scanline_strength=scanline_strength,
+        vignette=vignette,
+        curvature=curvature,
+        mask_strength=mask_strength,
+    )
+    _save_image(result, output)
+
+
+@app.command("oilpaint")
+def kuwahara_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    radius: int = typer.Option(4, help="Neighborhood radius"),
+):
+    image = _open_image(input)
+    result = kuwahara(image, radius=radius)
+    _save_image(result, output)
+
+
+@app.command("neon")
+def neon_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    strength: float = typer.Option(1.4),
+    glow_radius: float = typer.Option(1.8),
+    hue_shift: float = typer.Option(0.1),
+):
+    image = _open_image(input)
+    result = neon_edges(image, strength=strength, glow_radius=glow_radius, hue_shift=hue_shift)
     _save_image(result, output)
 
 @app.command("glitch")
