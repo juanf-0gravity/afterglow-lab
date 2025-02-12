@@ -40,6 +40,15 @@ Quick start
    # Glitch (aberration + scanlines)
    python -m afterglow.cli glitch input.jpg -o examples/output/glitch.png --shift 2 --line-shift 18 --prob 0.2
 
+   # Pixel sort (rows)
+   python -m afterglow.cli pixel-sort input.jpg -o examples/output/pixelsort.png --threshold 0.65 --direction row
+
+   # Flow-field painterly effect
+   python -m afterglow.cli flow-paint input.jpg -o examples/output/flow.png --steps 300
+
+   # Reaction-diffusion stylization
+   python -m afterglow.cli react-diff input.jpg -o examples/output/react.png --steps 250 --mix 0.5
+
    # Chain effects (quick and dirty parser)
    python -m afterglow.cli chain input.jpg -o examples/output/chain.png \
      "halftone:cell=8,contrast=1.1" \
@@ -47,6 +56,9 @@ Quick start
      "kaleidoscope:slices=12"
      "glitch:shift=2,line_shift=18,prob=0.2"
      "glow:threshold=0.9,strength=0.8,radius=12"
+     "pixel_sort:threshold=0.7,direction=row"
+     "flow_paint:steps=200"
+     "reaction_diffusion:steps=200,mix=0.6"
    ```
 
 Notes
