@@ -7,6 +7,7 @@ from PIL import Image
 from afterglow.filters.halftone import halftone_dots
 from afterglow.filters.perlin_warp import perlin_warp
 from afterglow.filters.kaleidoscope import kaleidoscope
+from afterglow.filters.glitch import chromatic_aberration, scanline_glitch
 
 app = typer.Typer(add_completion=False, help="Afterglow Lab: creative image tinkering")
 
@@ -61,6 +62,24 @@ def kaleidoscope(
     _save_image(result, output)
 
 
+@app.command("glitch")
+def glitch_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    aberration: bool = typer.Option(True, help="Apply chromatic aberration first"),
+    shift: int = typer.Option(3, help="Aberration shift in pixels"),
+    line_shift: int = typer.Option(12, help="Scanline horizontal shift range"),
+    prob: float = typer.Option(0.15, help="Probability a line gets shifted"),
+    seed: int = typer.Option(1234, help="Random seed for reproducibility"),
+):
+    image = _open_image(input)
+    current = image
+    if aberration:
+        current = chromatic_aberration(current, shift_pixels=shift)
+    current = scanline_glitch(current, line_shift_px=line_shift, line_probability=prob, seed=seed)
+    _save_image(current, output)
+
+
 @app.command()
 def chain(
     input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
@@ -96,6 +115,16 @@ def chain(
             current = perlin_warp(current, **params)
         elif name in {"kaleidoscope", "kale"}:
             current = kaleidoscope(current, **params)
+        elif name in {"glitch", "scanline"}:
+            # Map friendly params
+            if "shift" in params:
+                current = chromatic_aberration(current, shift_pixels=int(params.get("shift", 3)))
+            current = scanline_glitch(
+                current,
+                line_shift_px=int(params.get("line_shift", params.get("line_shift_px", 12))),
+                line_probability=float(params.get("prob", params.get("line_probability", 0.15))),
+                seed=int(params.get("seed", 1234)),
+            )
         else:
             raise typer.BadParameter(f"Unknown step: {name}")
 

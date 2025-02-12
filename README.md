@@ -27,11 +27,15 @@ Quick start
    # Kaleidoscope
    python -m afterglow.cli kaleidoscope input.jpg -o examples/output/kale.png --slices 8 --radius 0.95
 
+   # Glitch (aberration + scanlines)
+   python -m afterglow.cli glitch input.jpg -o examples/output/glitch.png --shift 2 --line-shift 18 --prob 0.2
+
    # Chain effects (quick and dirty parser)
    python -m afterglow.cli chain input.jpg -o examples/output/chain.png \
      "halftone:cell=8,contrast=1.1" \
      "perlin_warp:scale=10,intensity=14" \
      "kaleidoscope:slices=12"
+     "glitch:shift=2,line_shift=18,prob=0.2"
    ```
 
 Notes
