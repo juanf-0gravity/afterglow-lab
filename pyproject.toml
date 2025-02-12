@@ -9,7 +9,7 @@ description = "A small playground for creative image processing experiments"
 readme = "README.md"
 authors = [{ name = "Juan Flores", email = "rajdesai58.work@gmail.com" }]
 license = { text = "MIT" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
   "Pillow==10.4.0",
   "numpy==2.0.1",
