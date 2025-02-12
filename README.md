@@ -27,6 +27,9 @@ Quick start
    # Kaleidoscope
    python -m afterglow.cli kaleidoscope input.jpg -o examples/output/kale.png --slices 8 --radius 0.95
 
+   # Glow / simple bloom
+   python -m afterglow.cli glow input.jpg -o examples/output/glow.png --threshold 0.88 --strength 0.9 --radius 10
+
    # Glitch (aberration + scanlines)
    python -m afterglow.cli glitch input.jpg -o examples/output/glitch.png --shift 2 --line-shift 18 --prob 0.2
 
@@ -36,6 +39,7 @@ Quick start
      "perlin_warp:scale=10,intensity=14" \
      "kaleidoscope:slices=12"
      "glitch:shift=2,line_shift=18,prob=0.2"
+     "glow:threshold=0.9,strength=0.8,radius=12"
    ```
 
 Notes
