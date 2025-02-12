@@ -8,6 +8,7 @@ from afterglow.filters.halftone import halftone_dots
 from afterglow.filters.perlin_warp import perlin_warp
 from afterglow.filters.kaleidoscope import kaleidoscope
 from afterglow.filters.glitch import chromatic_aberration, scanline_glitch
+from afterglow.filters.bloom import bloom
 
 app = typer.Typer(add_completion=False, help="Afterglow Lab: creative image tinkering")
 
@@ -59,6 +60,19 @@ def kaleidoscope(
 ):
     image = _open_image(input)
     result = kaleidoscope(image, slices=slices, radius=radius)
+    _save_image(result, output)
+
+
+@app.command()
+def glow(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    threshold: float = typer.Option(0.85, help="Luminance threshold (0..1)"),
+    strength: float = typer.Option(0.8, help="Blend amount (0..1)"),
+    radius: int = typer.Option(12, help="Blur radius (px)"),
+):
+    image = _open_image(input)
+    result = bloom(image, threshold=threshold, strength=strength, radius=radius)
     _save_image(result, output)
 
 

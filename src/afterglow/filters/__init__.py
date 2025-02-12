@@ -2,6 +2,7 @@ from .halftone import halftone_dots
 from .perlin_warp import perlin_warp
 from .kaleidoscope import kaleidoscope
 from .glitch import chromatic_aberration, scanline_glitch
+from .bloom import bloom
 
 __all__ = [
     "halftone_dots",
@@ -9,4 +10,5 @@ __all__ = [
     "kaleidoscope",
     "chromatic_aberration",
     "scanline_glitch",
+    "bloom",
 ]
