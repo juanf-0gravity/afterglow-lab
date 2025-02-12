@@ -1,0 +1,2 @@
+[console_scripts]
+afterglow = afterglow.cli:app
