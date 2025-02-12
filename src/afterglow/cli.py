@@ -9,6 +9,9 @@ from afterglow.filters.perlin_warp import perlin_warp
 from afterglow.filters.kaleidoscope import kaleidoscope as kaleidoscope_filter
 from afterglow.filters.glitch import chromatic_aberration, scanline_glitch
 from afterglow.filters.bloom import bloom
+from afterglow.filters.pixel_sort import pixel_sort
+from afterglow.filters.flow_paint import flow_paint
+from afterglow.filters.reaction_diffusion import reaction_diffusion
 
 app = typer.Typer(add_completion=False, help="Afterglow Lab: creative image tinkering")
 
@@ -75,6 +78,48 @@ def glow(
     result = bloom(image, threshold=threshold, strength=strength, radius=radius)
     _save_image(result, output)
 
+
+@app.command("pixel-sort")
+def pixel_sort_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    threshold: float = typer.Option(0.7, help="Luminance threshold (0..1)"),
+    direction: str = typer.Option("row", help="row or col"),
+    reverse: bool = typer.Option(False, help="Reverse sort order"),
+):
+    image = _open_image(input)
+    result = pixel_sort(image, threshold=threshold, direction=direction, reverse=reverse)
+    _save_image(result, output)
+
+
+@app.command("flow-paint")
+def flow_paint_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    steps: int = typer.Option(400, help="Number of advection steps"),
+    stride: int = typer.Option(3, help="Sampling stride"),
+    jitter: float = typer.Option(0.3, help="Noise added to vectors"),
+    blur: float = typer.Option(1.2, help="Blur for gradients"),
+    seed: int = typer.Option(7, help="Random seed"),
+):
+    image = _open_image(input)
+    result = flow_paint(image, steps=steps, stride=stride, jitter=jitter, blur=blur, seed=seed)
+    _save_image(result, output)
+
+
+@app.command("react-diff")
+def reaction_diffusion_cmd(
+    input: Path = typer.Argument(..., exists=True, readable=True, help="Input image"),
+    output: Path = typer.Option(..., "-o", "--output", help="Output path"),
+    steps: int = typer.Option(300, help="Simulation steps"),
+    feed: float = typer.Option(0.055, help="Feed rate"),
+    kill: float = typer.Option(0.062, help="Kill rate"),
+    mix: float = typer.Option(0.6, help="Blend with original"),
+    seed: int = typer.Option(123, help="Random seed"),
+):
+    image = _open_image(input)
+    result = reaction_diffusion(image, steps=steps, feed=feed, kill=kill, mix=mix, seed=seed)
+    _save_image(result, output)
 
 @app.command("glitch")
 def glitch_cmd(
