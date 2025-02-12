@@ -80,3 +80,19 @@ Notes
 
 License
 - MIT. Use it for whatever. If you make something cool, I’d love to see it.
+
+## Gallery
+
+Some effects on a single photo (parameters in examples):
+
+| Halftone | Warp | Glitch | Glow |
+|---|---|---|---|
+| ![halftone](docs/images/halftone.png) | ![warp](docs/images/warp.png) | ![glitch](docs/images/glitch.png) | ![glow](docs/images/glow.png) |
+
+| Pixel sort | Flow paint | Reaction–diffusion | CRT |
+|---|---|---|---|
+| ![pixelsort](docs/images/pixelsort.png) | ![flow](docs/images/flow.png) | ![react](docs/images/react.png) | ![crt](docs/images/crt.png) |
+
+| ASCII | Oilpaint | Neon |
+|---|---|---|
+| ![ascii](docs/images/ascii.png) | ![oil](docs/images/oil.png) | ![neon](docs/images/neon.png) |
